@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Email Writer Assistant</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 280px;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: #f8f9ff;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4285f4, #0f9d58);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-icon {
+      width: 36px;
+      height: 36px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .header-text h1 {
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .header-text p {
+      color: rgba(255,255,255,0.8);
+      font-size: 11px;
+    }
+
+    .content {
+      padding: 16px;
+    }
+
+    .setting-row {
+      background: white;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .setting-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #5f6368;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    /* Toggle Switch */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggle-text {
+      font-size: 14px;
+      color: #202124;
+      font-weight: 500;
+    }
+
+    .toggle-status {
+      font-size: 11px;
+      color: #5f6368;
+      margin-top: 2px;
+    }
+
+    .switch {
+      position: relative;
+      width: 46px;
+      height: 26px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #ccc;
+      border-radius: 26px;
+      transition: 0.3s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 3px; bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    input:checked + .slider { background: linear-gradient(135deg, #4285f4, #0f9d58); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Tone Selector */
+    .tone-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .tone-btn {
+      padding: 8px;
+      border: 2px solid #e8eaed;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: #5f6368;
+      transition: all 0.2s;
+    }
+
+    .tone-btn:hover {
+      border-color: #4285f4;
+      color: #4285f4;
+    }
+
+    .tone-btn.active {
+      border-color: #4285f4;
+      background: #e8f0fe;
+      color: #4285f4;
+      font-weight: 600;
+    }
+
+    .tone-btn .emoji { font-size: 16px; display: block; margin-bottom: 2px; }
+
+    .footer {
+      padding: 10px 16px;
+      text-align: center;
+      font-size: 10px;
+      color: #9aa0a6;
+      border-top: 1px solid #e8eaed;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .status-on { background: #e6f4ea; color: #137333; }
+    .status-off { background: #fce8e6; color: #c5221f; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-icon">✉️</div>
+    <div class="header-text">
+      <h1>Email AI Assistant</h1>
+      <p>Powered by Gemini AI</p>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Toggle -->
+    <div class="setting-row">
+      <div class="setting-label">Extension Status</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-text">AI Reply Button</div>
+          <div class="toggle-status">
+            <span id="statusBadge" class="status-badge status-on">● Active</span>
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleSwitch" checked />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Tone Selector -->
+    <div class="setting-row" id="toneSection">
+      <div class="setting-label">Reply Tone</div>
+      <div class="tone-grid">
+        <button class="tone-btn active" data-tone="Professional">
+          <span class="emoji">💼</span>Professional
+        </button>
+        <button class="tone-btn" data-tone="Casual">
+          <span class="emoji">😊</span>Casual
+        </button>
+        <button class="tone-btn" data-tone="Friendly">
+          <span class="emoji">🤝</span>Friendly
+        </button>
+        <button class="tone-btn" data-tone="Formal">
+          <span class="emoji">🎩</span>Formal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Gmail AI Reply Assistant v1.0
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

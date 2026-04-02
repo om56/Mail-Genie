@@ -1,0 +1,29 @@
+.ai-reply-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4285f4, #0f9d58);
+    color: white !important;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    padding: 6px 14px;
+    border-radius: 16px;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    user-select: none;
+    height: 32px;
+}
+
+.ai-reply-button:hover {
+    background: linear-gradient(135deg, #3367d6, #0b8a4e);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+}
+
+.ai-reply-button:active {
+    transform: translateY(0px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
